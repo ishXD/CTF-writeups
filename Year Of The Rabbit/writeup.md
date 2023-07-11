@@ -54,11 +54,11 @@ Command : `hydra -l ftpuser -P pass.txt ftp://MACHINE-IP`
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20Of%20The%20Rabbit/images/Screenshot%202023-07-09%20165802.png)
 
 Some sweet credentials! Login to ftp and download the file Eli's_Creds using the `get` command
-
 Now I didn't know what the hell this was but it's an esoteric language called Brainfuck. Using an online decoder we get Eli's credentials.
 
-##FOOTHOLD
+## FOOTHOLD
 SSH using Eli's creds:
+
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20Of%20The%20Rabbit/images/Screenshot%202023-07-09%20170042.png)
 
 In search of a `s3cr3t` file we got Gwendoline's credentials! The user flag is not in Eli's home directory so let's look in gwendoline's now.
@@ -69,6 +69,7 @@ Sweet! Got the user flag
 ## PRIVILEGE ESCALATION
 Checking which commands can user gwendoline run: `sudo -l`
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20Of%20The%20Rabbit/images/Screenshot%202023-07-09%20170856.png)
+
 This means that we are allowed to run vi to open the user flag as any user except the root. If it had been ALL instead of !root , this would have been easier (just open vi and type !/bin/sh). However there is a vulnerability (CVE-2019-14287) we can exploit. If we give a parameter user id of -1 , the command will run as root. Command: `sudo -u#-1 /usr/bin/vi /home/gwendoline/user.txt`
 This will open the vi editor. Type `:` and gain the command line. Now type `!/bin/sh`, hit enter and there you have the root shell.
 
