@@ -1,7 +1,8 @@
-ENUMERATION
+##ENUMERATION
 An nmap scan of the host reveals 3 open ports: 21,22 and 80. 80 is running Apache and 22 as usual, is running SSH.
 `nmap -sC -sV -o nmap MACHINE-IP`
-'# Nmap 7.93 scan initiated Sun Jul 9 14:59:25 2023 as: nmap -sC -sV -o nmap 10.10.116.151
+``'
+# Nmap 7.93 scan initiated Sun Jul 9 14:59:25 2023 as: nmap -sC -sV -o nmap 10.10.116.151
         Nmap scan report for 10.10.116.151
         Host is up (0.16s latency).
         Not shown: 997 closed tcp ports (conn-refused)
@@ -18,7 +19,8 @@ An nmap scan of the host reveals 3 open ports: 21,22 and 80. 80 is running Apach
         |_http-server-header: Apache/2.4.10 (Debian)
         Service Info: OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
         # Nmap done at Sun Jul 9 14:59:59 2023 -- 1 IP address (1 host up) scanned in 34.13 seconds        
-    '
+    '``
+##ACTIVE ENUMERATION
 Let's investigate the webserver now. It's the default Apache landing page. Nothing out of the ordinary could be found even from the page source.
 Let's use gobuster to find some hidden directories.
 
@@ -42,7 +44,7 @@ Some sweet credentials! Login to ftp and download the file Eli's_Creds using the
 
 Now I didn't know what the hell this was but it's an esoteric language called Brainfuck. Using an online decoder we get Eli's credentials.
 
-FOOTHOLD
+##FOOTHOLD
 SSH using Eli's creds:
 
 In search of a "s3cr3t" file we got Gwendoline's credentials! The user flag is not in Eli's home directory so let's look in gwendoline's now.
