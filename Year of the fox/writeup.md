@@ -36,22 +36,25 @@ Host script results:
 |   FQDN: year-of-the-fox.lan
 |_  System time: 2023-07-11T11:56:49+01:00
 ```
+Taking a look at the webserver first:
+![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20194100.png)
+
+We don't have any credentials to work with for now so let's move on to Samba.
+
 ## SAMBA
-Use enum4linux:
+Use enum4linux to enumerate SMB shares:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20193807.png)
 
-Users :
+We got 2 users :
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20193917.png)
 
-Webserver:
-![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20194100.png)
-
+You can try to bruteforce smb using user fox but its time consuming.
 ## ACTIVE ENUMERATION
-use hydra to bruteforce web login:
+Use hydra to bruteforce web login. It works with user rascal but the password changes everytime we restart the machine.
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20194218.png)
 
-The webite:
+The website:
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20160130.png)
 
 Search an empty string and you have 3 files:
