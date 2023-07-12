@@ -107,8 +107,15 @@ Use Radare2 :
 r2 -AAAA /tmp/shutdown
 pdg
 ```
-And looks like this binary is calling the `poweroff` binary but also doesn't seem to be using an absolute path.
+And looks like this binary is calling the `poweroff` binary which doesn't seem to be using an absolute path. So, we can use PATH manipulation to spawn a root shell. Here we are copying /bin/bash to our own version of `/tmp/poweroff` and adding that to `$PATH `so that when it searches for the poweroff binary it searches the /tmp directory first.
+
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20165659.png)
+
+And there we have our root shell.
+
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20165746.png)
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20170230.png)
+
+Also found this :
+
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20170314.png)
