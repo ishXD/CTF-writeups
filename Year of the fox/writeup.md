@@ -84,7 +84,7 @@ Check all processes which are running:
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20195224.png)
 
 There seems to be SSH running on port 22 and can be confirmed in `/etc/ssh/sshd_config` file which also tells us that only user fox can use it. We can use this.
-Use socat:
+Use socat as a TCP port forwarder. Here socat listens on port 2222 , accepts connections and forwards connections to port 22 on remote host.
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-10%20195606.png)
 
@@ -101,6 +101,13 @@ Now see all the commands user fox can run : `sudo -l`
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20165345.png)
 
+We can run shutdown as root without password. GTFObins doesn't give anything. Dragging the file onto our machine so we can analyze it.
+Use Radare2 :
+```
+r2 -AAAA /tmp/shutdown
+pdg
+```
+And looks like this binary is calling the `poweroff` binary but also doesn't seem to be using an absolute path.
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20165659.png)
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20165746.png)
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20fox/images/Screenshot%202023-07-11%20170230.png)
