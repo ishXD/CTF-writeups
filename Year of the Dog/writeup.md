@@ -94,7 +94,7 @@ git commit -m 'RCE'
 git push
 ```
 
-![]()
+![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20153122.png)
 
 ## PRIVILEGE ESCALATION > ROOT
 Now , we're in the container confirmed by the `.dockerenv` file in `/` and we gotta break out. We can `su` rightaway.
